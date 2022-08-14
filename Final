@@ -1,0 +1,49 @@
+import json, requests
+import time
+#Api key for website access.
+api_key = "006ce94401085b3526c81a018031373e"
+#Base url for the program to acess and edit later in coding.
+base_url = "http://api.openweathermap.org/data/2.5/weather?"
+#defining main code for loop back and recall for later use.
+def main():
+#User input to either input zip code or city name.
+  city_zip = input("Please enter City Name or Zip-Code: ")
+#This code accesses the url for the site and inputs the correct information as well as a conversion for units.
+  complete_url = base_url + "appid=" + api_key + "&q=" + city_zip + "&units=imperial"
+  response = requests.get(complete_url)
+  x = response.json()
+#If else function. If the website relays information back then it can continue if not it will continue to else function for error.
+  if x["cod"] != "404":
+    y = x["main"]
+    temperature = y["temp"]
+    feelslike = y["feels_like"]
+    pressure = y["pressure"]
+    humidity = y["humidity"]
+    z = x["weather"]
+    sky_description = z[0]["description"]
+    w = x["wind"]
+    wind_speed = w["speed"]
+    print("The current weather in", city_zip, "is: " +
+          "\n Temperature = " +
+                    str(temperature) + "F"
+          "\n Feels Like = " +
+                    str(feelslike) + "F"
+          "\n Atmospheric Pressure = " +
+                    str(pressure) + "hPa"
+          "\n Humidity = " +
+                    str(humidity) + "%"
+          "\n Sky Description = " +
+                    str(sky_description) +
+          "\n Wind Speed = " +
+                    str(wind_speed) + "mPh")
+  else:
+    print(" This location can not be found. Please try again ")
+#Repeat function allows the user to run the program multiple times. It accesses the main function before asking for input from the user on wanting to continue. If the user says yes or y then the program will reactivate the main function. If anything else is inputed it will continue.
+repeat = "yes"
+while repeat == "yes" or repeat == "y":
+  main()
+  time.sleep(3)
+  print("Would you like to view another city (yes or no)? ")
+  repeat = input()
+if repeat != "yes" or "y":
+    print("Have a nice day.")
